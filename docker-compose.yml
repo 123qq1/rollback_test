@@ -12,10 +12,13 @@ services:
     build:
       context: .
       dockerfile: web_socket_client/Dockerfile
+    depends_on:
+      - web_socket_api
 
   web_socket_client_2:
     image: ${DOCKER_REGISTRY-}websocketclient
     build:
       context: .
       dockerfile: web_socket_client/Dockerfile
-
+    depends_on:
+      - web_socket_api
