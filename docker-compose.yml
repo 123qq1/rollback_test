@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  web_socket_api:
+    image: ${DOCKER_REGISTRY-}websocketapi
+    build:
+      context: .
+      dockerfile: web_socket_api/Dockerfile
+
+  web_socket_client_1:
+    image: ${DOCKER_REGISTRY-}websocketclient
+    build:
+      context: .
+      dockerfile: web_socket_client/Dockerfile
+
+  web_socket_client_2:
+    image: ${DOCKER_REGISTRY-}websocketclient
+    build:
+      context: .
+      dockerfile: web_socket_client/Dockerfile
+
