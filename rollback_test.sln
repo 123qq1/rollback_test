@@ -5,11 +5,11 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{46566C27-4CD0-4987-B11C-E23C378010C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web_socket_api", "web_socket_api\web_socket_api.csproj", "{B2F682CD-0C18-4055-A6BF-3C200736F4CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web_socket_api", "web_socket_api\web_socket_api.csproj", "{B2F682CD-0C18-4055-A6BF-3C200736F4CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{F822C5AE-B854-4BB1-A3B2-C645E721992C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web_socket_client", "web_socket_client\web_socket_client.csproj", "{194D6608-7BF5-4DAA-BA4D-06DE5D6EE448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web_socket_client", "web_socket_client\web_socket_client.csproj", "{194D6608-7BF5-4DAA-BA4D-06DE5D6EE448}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0FB28888-EC27-4E1B-9C8A-1C7C49E5668E}"
 EndProject
