@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cicxpfxl2hc3p"]
+[gd_scene load_steps=5 format=3 uid="uid://cicxpfxl2hc3p"]
 
 [ext_resource type="Script" path="res://scripts/player/character_manager.gd" id="1_1gvmd"]
 [ext_resource type="SpriteFrames" uid="uid://bymgv88mw7eft" path="res://scripts/player/sprites/character_anim_v1.tres" id="2_ywy7x"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="3_nndfc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1t2r0"]
 size = Vector2(124, 239.5)
@@ -11,7 +12,9 @@ size = Vector2(124, 239.5)
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(-300, 0)
 script = ExtResource("1_1gvmd")
+mov_speed = Vector2(40, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(5, 16.75)
@@ -22,4 +25,14 @@ texture_filter = 1
 scale = Vector2(11.369, 11.369)
 sprite_frames = ExtResource("2_ywy7x")
 animation = &"Idle"
-frame_progress = 0.943014
+autoplay = "Idle"
+
+[node name="PlayerController" type="Node2D" parent="."]
+script = ExtResource("3_nndfc")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Walls"]
+
+[connection signal="move" from="PlayerController" to="CharacterBody2D" method="move"]
+[connection signal="stop" from="PlayerController" to="CharacterBody2D" method="stop_moving"]
