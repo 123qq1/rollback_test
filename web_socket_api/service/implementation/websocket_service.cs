@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace web_socket_api.service.implementation
@@ -33,6 +34,7 @@ namespace web_socket_api.service.implementation
 
             while (con.State == WebSocketState.Open)
             {
+                buffer = new byte[1024 * 4];
                 var result = await con.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 Handle(result, buffer, con);
             }
@@ -43,7 +45,7 @@ namespace web_socket_api.service.implementation
             if (result.MessageType == WebSocketMessageType.Text)
             {
                 string message = Encoding.UTF8.GetString(buffer);
-                                
+                await Console.Out.WriteLineAsync(message);
                 await Broadcast(con_name + " : " + message);
             }
             else if (result.MessageType == WebSocketMessageType.Close || con.State == WebSocketState.Aborted)

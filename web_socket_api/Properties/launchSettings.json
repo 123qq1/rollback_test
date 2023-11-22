@@ -30,8 +30,7 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_URLS": "https://+:443;http://+:80"
       },

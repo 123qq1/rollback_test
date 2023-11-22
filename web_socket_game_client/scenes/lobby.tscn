@@ -1,0 +1,124 @@
+[gd_scene load_steps=4 format=3 uid="uid://bckei1ot4pj5l"]
+
+[ext_resource type="Theme" uid="uid://b60if361fgwau" path="res://themes/new_theme.tres" id="1_adllu"]
+[ext_resource type="Script" path="res://scripts/global_connector.gd" id="2_lwm8s"]
+[ext_resource type="Script" path="res://scripts/output_message.gd" id="3_5rv2y"]
+
+[node name="lobby" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = -566.0
+offset_top = -317.0
+offset_right = 171.0
+offset_bottom = 145.0
+size_flags_horizontal = 0
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 23
+
+[node name="Url" type="HSplitContainer" parent="UI/VBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 130
+
+[node name="UrlLabel" type="Label" parent="UI/VBoxContainer/Url"]
+layout_mode = 2
+theme = ExtResource("1_adllu")
+text = "Url"
+
+[node name="UrlEdit" type="LineEdit" parent="UI/VBoxContainer/Url"]
+layout_mode = 2
+theme = ExtResource("1_adllu")
+theme_override_constants/minimum_character_width = 9
+placeholder_text = "ws://localhost:41000/api/ws"
+script = ExtResource("2_lwm8s")
+function_name = &"change_url"
+signal_name = &"text_changed"
+
+[node name="Name" type="HSplitContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 99
+
+[node name="NameLabel" type="Label" parent="UI/VBoxContainer/Name"]
+layout_mode = 2
+theme = ExtResource("1_adllu")
+text = "Name"
+
+[node name="NameEdit" type="LineEdit" parent="UI/VBoxContainer/Name"]
+layout_mode = 2
+theme = ExtResource("1_adllu")
+theme_override_constants/minimum_character_width = 9
+placeholder_text = "Name"
+script = ExtResource("2_lwm8s")
+function_name = &"change_name"
+signal_name = &"text_changed"
+
+[node name="HBoxContainer" type="Control" parent="UI/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_stretch_ratio = 0.0
+
+[node name="Connect" type="Button" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+offset_right = 161.0
+offset_bottom = 39.0
+theme = ExtResource("1_adllu")
+text = "Connect"
+script = ExtResource("2_lwm8s")
+function_name = &"connect_to_ws"
+signal_name = &"pressed"
+
+[node name="Disconnect" type="Button" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 0
+offset_left = 182.0
+offset_right = 343.0
+offset_bottom = 39.0
+theme = ExtResource("1_adllu")
+text = "Disconnect"
+script = ExtResource("2_lwm8s")
+function_name = &"close_connection"
+signal_name = &"pressed"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_left = 225.0
+offset_top = -308.0
+offset_right = 555.0
+offset_bottom = 67.0
+script = ExtResource("3_5rv2y")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = -566.0
+offset_top = -79.0
+offset_right = 125.0
+offset_bottom = 36.0
+
+[node name="LineEdit" type="LineEdit" parent="UI/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("1_adllu")
+script = ExtResource("2_lwm8s")
+function_name = &"change_message"
+signal_name = &"text_changed"
+
+[node name="Control" type="Control" parent="UI/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/VBoxContainer2/Control"]
+layout_mode = 0
+offset_right = 202.0
+offset_bottom = 31.0
+theme = ExtResource("1_adllu")
+text = "Send"
+script = ExtResource("2_lwm8s")
+function_name = &"send_message"
+signal_name = &"pressed"

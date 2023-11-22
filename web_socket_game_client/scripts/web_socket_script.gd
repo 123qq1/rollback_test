@@ -39,6 +39,7 @@ func _process(_delta):
 		
 func change_message(text):
 	cur_message = text
+	print(cur_message)
 	
 func close_connection():
 	_client.close()
