@@ -103,22 +103,5 @@ offset_top = -79.0
 offset_right = 125.0
 offset_bottom = 36.0
 
-[node name="LineEdit" type="LineEdit" parent="UI/VBoxContainer2"]
-layout_mode = 2
-theme = ExtResource("1_adllu")
-script = ExtResource("2_lwm8s")
-function_name = &"change_message"
-signal_name = &"text_changed"
-
 [node name="Control" type="Control" parent="UI/VBoxContainer2"]
 layout_mode = 2
-
-[node name="Button" type="Button" parent="UI/VBoxContainer2/Control"]
-layout_mode = 0
-offset_right = 202.0
-offset_bottom = 31.0
-theme = ExtResource("1_adllu")
-text = "Send"
-script = ExtResource("2_lwm8s")
-function_name = &"send_message"
-signal_name = &"pressed"

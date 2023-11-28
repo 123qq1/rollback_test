@@ -24,7 +24,7 @@ namespace web_socket_api.service.implementation
             using var web_socket = await context.WebSockets.AcceptWebSocketAsync();
             con_name = cur_name;
             con_id = _connectionManager.AddSocket(web_socket);
-            await Broadcast(con_name + " joined");
+            //await Broadcast(con_name + " joined");
             await Receive(web_socket);
         }
 
@@ -45,8 +45,7 @@ namespace web_socket_api.service.implementation
             if (result.MessageType == WebSocketMessageType.Text)
             {
                 string message = Encoding.UTF8.GetString(buffer);
-                await Console.Out.WriteLineAsync(message);
-                await Broadcast(con_name + " : " + message);
+                await Broadcast(message);
             }
             else if (result.MessageType == WebSocketMessageType.Close || con.State == WebSocketState.Aborted)
             {
