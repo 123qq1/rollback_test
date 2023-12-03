@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpdyitlkyt1xa"]
+[gd_scene load_steps=3 format=3 uid="uid://dpdyitlkyt1xa"]
 
-[ext_resource type="Script" path="res://scripts/player/character_manager.gd" id="1_52dcv"]
 [ext_resource type="SpriteFrames" uid="uid://bymgv88mw7eft" path="res://sprites/character_anim_v1.tres" id="2_iflyc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1t2r0"]
@@ -8,8 +7,6 @@ size = Vector2(102, 227.5)
 
 [node name="CharacterRight" type="CharacterBody2D"]
 position = Vector2(300, 0)
-script = ExtResource("1_52dcv")
-mov_speed = Vector2(40, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5, 22.75)

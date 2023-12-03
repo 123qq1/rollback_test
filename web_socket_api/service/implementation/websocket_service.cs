@@ -10,6 +10,7 @@ namespace web_socket_api.service.implementation
         private web_socket_connection_manager _connectionManager;
         private string con_name;
         private Guid con_id;
+        private int lag = 500;
 
         public websocket_service(web_socket_connection_manager connectionManager)
         {
@@ -42,6 +43,7 @@ namespace web_socket_api.service.implementation
 
         private async Task Handle(WebSocketReceiveResult result, byte[] buffer, WebSocket con)
         {
+            await Task.Delay(lag);
             if (result.MessageType == WebSocketMessageType.Text)
             {
                 string message = Encoding.UTF8.GetString(buffer);

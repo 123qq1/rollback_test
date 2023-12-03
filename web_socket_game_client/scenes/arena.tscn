@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cicxpfxl2hc3p"]
+[gd_scene load_steps=7 format=3 uid="uid://cicxpfxl2hc3p"]
 
 [ext_resource type="PackedScene" uid="uid://br2nr2xik5l64" path="res://scenes/character/character_left.tscn" id="1_5d5ci"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="3_nndfc"]
 [ext_resource type="PackedScene" uid="uid://dpdyitlkyt1xa" path="res://scenes/character/character_right.tscn" id="3_uw0dl"]
 [ext_resource type="Script" path="res://scripts/player_connector.gd" id="4_wlypq"]
+[ext_resource type="Script" path="res://scripts/set_label.gd" id="5_ehq2x"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="6_ovipy"]
 
 [node name="arena" type="Node2D"]
 
@@ -20,3 +22,13 @@ script = ExtResource("3_nndfc")
 script = ExtResource("4_wlypq")
 player_1 = NodePath("../CharacterLeft")
 player_2 = NodePath("../CharacterRight")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -558.0
+offset_top = -306.0
+offset_right = -447.0
+offset_bottom = -283.0
+script = ExtResource("5_ehq2x")
+
+[node name="GameManager" type="Node2D" parent="."]
+script = ExtResource("6_ovipy")

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 enum states {IDLE,MOVING,BLOCKING,BLOCK_STUN,HIT_STUN,ATTACKING}
 
-@export var mov_speed : Vector2
+@export var mov_speed = Vector2(30,0)
 var cur_state
 var dir
 var animator

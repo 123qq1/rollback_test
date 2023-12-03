@@ -77,17 +77,6 @@ script = ExtResource("2_lwm8s")
 function_name = &"connect_to_ws"
 signal_name = &"pressed"
 
-[node name="Disconnect" type="Button" parent="UI/VBoxContainer/HBoxContainer"]
-layout_mode = 0
-offset_left = 182.0
-offset_right = 343.0
-offset_bottom = 39.0
-theme = ExtResource("1_adllu")
-text = "Disconnect"
-script = ExtResource("2_lwm8s")
-function_name = &"close_connection"
-signal_name = &"pressed"
-
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
 layout_mode = 0
 offset_left = 225.0
