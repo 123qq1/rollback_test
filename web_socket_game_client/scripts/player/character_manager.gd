@@ -10,7 +10,7 @@ var animator
 func _ready():
 	animator = get_node("AnimatedSprite2D")
 
-func _process(delta):
+func _physics_process(delta):
 	match cur_state:
 		states.IDLE:
 			if animator.animation != "Idle":

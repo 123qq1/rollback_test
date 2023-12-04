@@ -86,6 +86,7 @@ func close_connection():
 	on_disconnected.emit()
 		
 func send_message():
+	print(cur_message)
 	_client.send_text("|" + cur_message + "|")
 
 func get_con_name():

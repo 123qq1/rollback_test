@@ -23,6 +23,9 @@ func handle(message):
 				return
 			state = states.CONNECTING
 			other = message.name
+			WebSocketManager.change_message('"type":"connecting","other":"'+other+'","p_1":true')
+			WebSocketManager.send_message()
+	
 		"connecting":
 			if message.other != con_name:
 				return
@@ -31,15 +34,24 @@ func handle(message):
 			state = states.CONFIRMING
 			other = message.name
 			p_1 = !message.p_1
+			WebSocketManager.change_message('"type":"confirming","other":"'+other+'","p_1":'+str(p_1)+'')
+			WebSocketManager.send_message()
 		"confirming":
 			if message.other != con_name:
-				return
+				return		
 			if state != states.CONNECTING:
 				return
 			state = states.STARTING
-	
+			p_1 = !message.p_1
+		"starting":
+			if p_1:
+				return
+			if message.other != con_name:
+				return
+			state = states.PLAYING
+			
 func _process(delta):
-	print(con_name+" : "+str(state))
+	print("%s : %s : %s : %s" % [con_name,states.keys()[state],p_1,other])
 	match state:
 		states.IDLE:
 			pass
@@ -47,8 +59,13 @@ func _process(delta):
 			WebSocketManager.change_message('"type":"searching"')
 			WebSocketManager.send_message()
 		states.CONNECTING:
-			WebSocketManager.change_message('"type":"connecting","other":"'+other+'","p_1":true')
-			WebSocketManager.send_message()
+			pass
 		states.CONFIRMING:
-			WebSocketManager.change_message('"type":"confirming","other":"'+other+'"')
+			pass
+		states.STARTING:
+			if !p_1:
+				return
+			WebSocketManager.change_message('"type":"starting","other":"'+other+'"')
 			WebSocketManager.send_message()
+			state = states.PLAYING
+			

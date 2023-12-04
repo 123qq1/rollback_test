@@ -10,7 +10,7 @@ namespace web_socket_api.service.implementation
         private web_socket_connection_manager _connectionManager;
         private string con_name;
         private Guid con_id;
-        private int lag = 500;
+        private int lag = 30;
 
         public websocket_service(web_socket_connection_manager connectionManager)
         {
