@@ -25,7 +25,13 @@ namespace web_socket_api.service.implementation
             using var web_socket = await context.WebSockets.AcceptWebSocketAsync();
             con_name = cur_name;
             con_id = _connectionManager.AddSocket(web_socket);
-            //await Broadcast(con_name + " joined");
+            await send(
+                "|{" +
+                "\"name\":\""+con_name+"\"," +
+                "\"type\":\"id\"," +
+                "\"id\":\"" + con_id+"\""+
+                "}|"
+                ,web_socket);
             await Receive(web_socket);
         }
 
@@ -68,6 +74,15 @@ namespace web_socket_api.service.implementation
                     connection.SendAsync(array_segment, WebSocketMessageType.Text, true, CancellationToken.None);
                 }
             }
+        }
+
+        private async Task send(string message, WebSocket soc)
+        {
+            var bytes = Encoding.UTF8.GetBytes(message);
+
+            var array_segment = new ArraySegment<byte>(bytes, 0, bytes.Length);
+            soc.SendAsync(array_segment, WebSocketMessageType.Text, true, CancellationToken.None);
+
         }
     }
 }

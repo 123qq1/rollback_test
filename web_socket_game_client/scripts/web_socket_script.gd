@@ -13,6 +13,7 @@ var pinged = false
 
 var _client = WebSocketPeer.new()
 var con_name = "test"
+var id
 
 var connections = {}
 var beat = 0
@@ -21,7 +22,7 @@ var heart_rate = 1.0
 func connect_to_ws():
 	_client.connect_to_url(web_socket_url+"?name="+con_name)
 	connected = true
-	on_connected.emit()
+
 	
 func change_name(new_text):
 	con_name = new_text
@@ -57,8 +58,11 @@ func handle_connection():
 			var json_string = packet.get_slice("|",1)
 			var obj = JSON.parse_string(json_string)
 			connection_pulse(obj.name)
+			if obj.type == "id":
+				set_id(obj.id)
 			if obj.name != con_name:
 				recived_message.emit(obj)
+			
 	elif state == WebSocketPeer.STATE_CLOSING:
 		pass
 	elif state == WebSocketPeer.STATE_CLOSED:
@@ -84,10 +88,14 @@ func close_connection():
 	recived_message.emit("Disconnected")
 	connected = false
 	on_disconnected.emit()
-		
+			
 func send_message():
 	print(cur_message)
 	_client.send_text("|" + cur_message + "|")
-
+func set_id(_id):
+	id = _id
+	on_connected.emit()
 func get_con_name():
 	return con_name
+func get_id():
+	return id
