@@ -1,22 +1,30 @@
 extends Node
 
 signal start(p_1)
+signal step(delta)
 
 enum states {IDLE,SEARCHING,CONNECTING,CONFIRMING,STARTING,PLAYING}
 
 var state = states.IDLE
+var first_playing = true
 var p_1
 var game_time = 0
 var other
 var con_name
 var id
 
+var player_1_history
+var player_2_history
+
+func setup_players(_p_1):
+	p_1 = _p_1
+
+
 func _ready():
 	state = states.SEARCHING
 	WebSocketManager.recived_message.connect(handle)
 	con_name = WebSocketManager.get_con_name()
 	id = WebSocketManager.get_id()
-	print(id)
 	
 func handle(message):
 	
@@ -36,15 +44,15 @@ func handle(message):
 				return
 			state = states.CONFIRMING
 			other = message.name
-			p_1 = message.id > id
+			setup_players(message.id > id)
 			WebSocketManager.change_message('"type":"confirming","other":"'+other+'","id":"'+id+'"')
 			WebSocketManager.send_message()
 		"confirming":
 			if message.other != con_name:
 				return		
-			if state != states.CONNECTING:
+			if ![states.CONNECTING,states.CONFIRMING].has(state):
 				return
-			p_1 = message.id > id
+			setup_players(message.id > id)
 			state = states.STARTING
 			if !p_1:
 				WebSocketManager.change_message('"type":"confirmed","other":"'+other+'","id":"'+id+'"')
@@ -60,10 +68,11 @@ func handle(message):
 				return
 			if message.other != con_name:
 				return
-			state = states.PLAYING
+			state = states.STARTING
 			
-func _process(_delta):
-	print("%s : %s : %s : %s" % [con_name,states.keys()[state],p_1,other])
+func _physics_process(delta):
+	if state != states.PLAYING:
+		print("%s : %s : %s : %s" % [con_name,states.keys()[state],p_1,other])
 	match state:
 		states.IDLE:
 			pass
@@ -80,4 +89,14 @@ func _process(_delta):
 			WebSocketManager.change_message('"type":"starting","other":"'+other+'"')
 			WebSocketManager.send_message()
 			state = states.PLAYING
+		states.PLAYING:
+			playing(delta)
 			
+func playing(delta):
+	#Game logic
+	if first_playing:
+		print("%s Sending Setup" % con_name)
+		start.emit(p_1)
+		first_playing = false
+	step.emit(delta)
+	game_time += 1

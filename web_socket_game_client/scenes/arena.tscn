@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cicxpfxl2hc3p"]
+[gd_scene load_steps=8 format=3 uid="uid://cicxpfxl2hc3p"]
 
 [ext_resource type="PackedScene" uid="uid://br2nr2xik5l64" path="res://scenes/character/character_left.tscn" id="1_5d5ci"]
+[ext_resource type="Script" path="res://scripts/player/character_manager.gd" id="2_i1b11"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="3_nndfc"]
 [ext_resource type="PackedScene" uid="uid://dpdyitlkyt1xa" path="res://scenes/character/character_right.tscn" id="3_uw0dl"]
 [ext_resource type="Script" path="res://scripts/player_connector.gd" id="4_wlypq"]
@@ -12,16 +13,19 @@
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="CharacterLeft" parent="." instance=ExtResource("1_5d5ci")]
+script = ExtResource("2_i1b11")
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource("3_nndfc")
 
 [node name="CharacterRight" parent="." instance=ExtResource("3_uw0dl")]
+script = ExtResource("2_i1b11")
 
-[node name="PlayerConnector" type="Node2D" parent="." node_paths=PackedStringArray("player_1", "player_2")]
+[node name="PlayerConnector" type="Node2D" parent="." node_paths=PackedStringArray("player_1", "player_2", "player_controller")]
 script = ExtResource("4_wlypq")
 player_1 = NodePath("../CharacterLeft")
 player_2 = NodePath("../CharacterRight")
+player_controller = NodePath("../PlayerController")
 
 [node name="Label" type="Label" parent="."]
 offset_left = -558.0
@@ -32,3 +36,7 @@ script = ExtResource("5_ehq2x")
 
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource("6_ovipy")
+
+[connection signal="start" from="GameManager" to="PlayerConnector" method="setup_wireless"]
+[connection signal="step" from="GameManager" to="CharacterLeft" method="step"]
+[connection signal="step" from="GameManager" to="CharacterRight" method="step"]

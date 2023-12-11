@@ -8,9 +8,13 @@ var dir
 var animator
 
 func _ready():
+	_setup()
+	
+func _setup():
 	animator = get_node("AnimatedSprite2D")
+	
 
-func _physics_process(delta):
+func step(delta):
 	match cur_state:
 		states.IDLE:
 			if animator.animation != "Idle":
