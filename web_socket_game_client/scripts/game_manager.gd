@@ -13,8 +13,8 @@ var other
 var con_name
 var id
 
-var player_1_history
-var player_2_history
+var p_1_time = 0
+var p_2_time = 0
 
 func setup_players(_p_1):
 	p_1 = _p_1
@@ -91,12 +91,26 @@ func _physics_process(delta):
 			state = states.PLAYING
 		states.PLAYING:
 			playing(delta)
-			
+
+func set_p_1_state(state,time):
+	p_1_time = time
+	if !p_1:
+		WebSocketManager.change_message('"type":"starting","other":"'+other+'","state":%s'%[state])
+		WebSocketManager.send_message()
+	
+func set_p_2_state(state,time):
+	p_2_time = time
+	if p_1:
+		WebSocketManager.change_message('"type":"starting","other":"'+other+'","state":%s'%[state])
+		WebSocketManager.send_message()
+
 func playing(delta):
 	#Game logic
 	if first_playing:
 		print("%s Sending Setup" % con_name)
 		start.emit(p_1)
 		first_playing = false
-	step.emit(delta)
-	game_time += 1
+		
+	if game_time == p_1_time && game_time == p_2_time:
+		step.emit(delta)
+		game_time += 1
