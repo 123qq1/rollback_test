@@ -39,6 +39,8 @@ script = ExtResource("6_ovipy")
 
 [connection signal="found_next_state" from="CharacterLeft" to="GameManager" method="set_p_1_state"]
 [connection signal="found_next_state" from="CharacterRight" to="GameManager" method="set_p_2_state"]
+[connection signal="rollback" from="GameManager" to="CharacterLeft" method="roll_back"]
+[connection signal="rollback" from="GameManager" to="CharacterRight" method="roll_back"]
 [connection signal="start" from="GameManager" to="PlayerConnector" method="setup_wireless"]
 [connection signal="step" from="GameManager" to="CharacterLeft" method="step"]
 [connection signal="step" from="GameManager" to="CharacterRight" method="step"]

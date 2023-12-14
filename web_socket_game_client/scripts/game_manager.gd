@@ -2,6 +2,7 @@ extends Node
 
 signal start(p_1)
 signal step(delta)
+signal rollback(state,string)
 
 enum states {IDLE,SEARCHING,CONNECTING,CONFIRMING,STARTING,PLAYING}
 
@@ -69,7 +70,12 @@ func handle(message):
 			if message.other != con_name:
 				return
 			state = states.STARTING
-			
+		"state":
+			if message.other != con_name:
+				return
+			if state != states.PLAYING:
+				return
+			rollback.emit(message.state,JSON.stringify(message.state))
 func _physics_process(delta):
 	if state != states.PLAYING:
 		print("%s : %s : %s : %s" % [con_name,states.keys()[state],p_1,other])
@@ -92,16 +98,18 @@ func _physics_process(delta):
 		states.PLAYING:
 			playing(delta)
 
-func set_p_1_state(state,time):
+func set_p_1_state(game_state,time):
 	p_1_time = time
+	print("update time p_1: %s" % time)
 	if !p_1:
-		WebSocketManager.change_message('"type":"starting","other":"'+other+'","state":%s'%[state])
+		WebSocketManager.change_message('"type":"state","other":"'+other+'","state":%s'%[game_state])
 		WebSocketManager.send_message()
 	
-func set_p_2_state(state,time):
+func set_p_2_state(game_state,time):
 	p_2_time = time
+	print("update time p_2: %s" % time)
 	if p_1:
-		WebSocketManager.change_message('"type":"starting","other":"'+other+'","state":%s'%[state])
+		WebSocketManager.change_message('"type":"state","other":"'+other+'","state":%s'%[game_state])
 		WebSocketManager.send_message()
 
 func playing(delta):
@@ -112,5 +120,6 @@ func playing(delta):
 		first_playing = false
 		
 	if game_time == p_1_time && game_time == p_2_time:
+		print("Step : %s , %s" % [p_1_time,p_2_time])
 		step.emit(delta)
 		game_time += 1

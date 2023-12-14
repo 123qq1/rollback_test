@@ -5,8 +5,8 @@ enum states {IDLE,MOVING,BLOCKING,BLOCK_STUN,HIT_STUN,ATTACKING}
 signal found_next_state(state,time)
 
 @export var mov_speed = Vector2(30,0)
-var cur_state
-var dir
+var cur_state = states.IDLE
+var dir = 0
 var animator
 var p_1
 var is_ai
@@ -27,6 +27,14 @@ func _setup():
 	
 
 func step(delta):
+	var state
+	state = find_next_state(delta)
+	state_history.append(state)
+	print("time ++ %s"% [is_ai])
+	time += 1
+	found_next_state.emit(state,time)
+	
+func find_next_state(delta):
 	match cur_state:
 		states.IDLE:
 			if animator.animation != "Idle":
@@ -40,35 +48,50 @@ func step(delta):
 				position += dir * mov_speed * delta
 			else:
 				cur_state = states.IDLE
-	find_next_state(delta)
-	time += 1
-	
-func find_next_state(delta):
-	var state
+				
 	if is_ai:
-		state = ai_state(delta)
+		return ai_state(delta)
 	else:
-		state = player_state(delta)
-	found_next_state.emit(state,time)
-	state_history.append(state)
+		return player_state(delta)
+
+
 	
 func player_state(delta):
-	var state = '{"state": %s,"pos_x": %s,"pos_y": %s,"dir": %s,"delta": %s,"time": %s}' % [cur_state,position.x,position.y,dir,delta,time]
+	var state = '{"delta":%s,"dir":%s,"pos_x":%s,"pos_y":%s,"state":%s,"time":%s}' % [delta,dir,position.x,position.y,cur_state,time]
 	return state
 
 func ai_state(delta):
 	var state
+	print("finding state %s ,%s" % [time,is_ai])
 	if state_history.size() == 0:
-		state = '{"state": %s,"pos_x": %s,"pos_y": %s,"dir": %s,"delta": %s,"time": %s}' % [cur_state,position.x,position.y,dir,delta,time]
+		state = '{"delta":%s,"dir":%s,"pos_x":%s,"pos_y":%s,"state":%s,"time":%s}' % [delta,dir,position.x,position.y,cur_state,time]
 	else:
 		var old_state_string = state_history[time-1]
 		var old_state = JSON.parse_string(old_state_string)
-		state = '{"state": %s,"pos_x": %s,"pos_y": %s,"dir": %s,"delta": %s,"time": %s}' % [old_state.state,position.x,position.y,old_state.dir,old_state.delta,time]
+		state = '{"delta":%s,"dir":%s,"pos_x":%s,"pos_y":%s,"state":%s,"time":%s}' % [old_state.delta,old_state.dir,position.x,position.y,old_state.state,time]
 	return state
 
+func roll_back(state,string):
+	if !is_ai:
+		return
+	var old_string =  state_history[state.time]
+	print("Old %s : New %s" % [old_string,string])
+	if string == old_string:
+		return
+	print("Rollback %s" % [is_ai])
+	var new_time = state.time
+	var cur_time = time
+	
+	apply_state(state)
+	
+	for i in range(new_time,cur_time):
+		var old_state = JSON.parse_string(state_history[i])
+		var delta = old_state.delta
+		var new_state = find_next_state(delta)
+		state_history[i] = new_state 
 
 func apply_state(state):
-	cur_state = states[state.state]
+	cur_state = state.state
 	dir = state.dir
 	time = state.time
 	position.x = state.pos_x
